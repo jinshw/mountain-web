@@ -1,4 +1,6 @@
-// layout
+import demo from './modules/demo'
+import sys from './modules/sys'
+
 import layoutHeaderAside from '@/layout/header-aside'
 
 const meta = { requiresAuth: true }
@@ -17,58 +19,26 @@ const frameIn = [
         name: 'index',
         meta,
         component: () => import('@/pages/index')
-      },
-      {
-        path: '/sys/user',
-        name: 'user',
-        component: () => import('@/pages/sys/user'),
-        meta: { meta, title: 'user' }
-      },
-      {
-        path: '/sys/dept',
-        name: 'dept',
-        component: () => import('@/pages/sys/dept'),
-        meta: { meta, title: 'dept' }
-      },
-      {
-        path: '/sys/role',
-        name: 'role',
-        component: () => import('@/pages/sys/role'),
-        meta: { meta, title: 'role' }
-      },
-      {
-        path: '/sys/menu',
-        name: 'menu',
-        component: () => import('@/pages/sys/menu'),
-        meta: { meta, title: 'menu' }
-      },
-      {
-        path: '/page1',
-        name: 'page1',
-        component: () => import('@/pages/page1'),
-        meta: { meta, title: '页面 1' }
-      },
-      {
-        path: '/page2',
-        name: 'page2',
-        component: () => import('@/pages/page2'),
-        meta: { meta, title: '页面 2' }
-      },
-      {
-        path: '/page3',
-        name: 'page3',
-        component: () => import('@/pages/page3'),
-        meta: { meta, title: '页面 3' }
       }
     ]
-  }
+  },
+  demo,
+  sys
 ]
 
 /**
  * 在主框架之外显示
  */
 const frameOut = [
-  // 登陆
+  // 页面重定向使用 必须保留
+  {
+    path: '/redirect/:path*',
+    component: {
+      beforeCreate () { this.$router.replace(JSON.parse(this.$route.params.path)) },
+      render: h => h()
+    }
+  },
+  // 登录
   {
     path: '/login',
     name: 'login',

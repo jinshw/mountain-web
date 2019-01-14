@@ -1,110 +1,165 @@
 <template>
   <d2-container>
-    <h1 class="d2-mt-0">role</h1>
-    <el-row class="d2-mb">
-      <el-button>默认按钮</el-button>
-      <el-button type="primary">主要按钮</el-button>
-      <el-button type="success">成功按钮</el-button>
-      <el-button type="info">信息按钮</el-button>
-      <el-button type="warning">警告按钮</el-button>
-      <el-button type="danger">危险按钮</el-button>
+    <h1 class="d2-mt-0">角色管理</h1>
+    <el-row class="d2-mb" :gutter="10">
+      <el-col :span="6">
+        <el-input type="text" placeholder="角色名称" v-model="searchText"></el-input>
+      </el-col>
+      <el-col :span="18">
+        <el-button v-on:click="getRoles">查询</el-button>
+        <el-button type="primary" v-on:click="addDialogVisible=true">新增</el-button>
+        <el-button type="primary" >修改</el-button>
+        <el-button type="primary" >删除</el-button>
+      </el-col>  
+      
     </el-row>
-    <el-row class="d2-mb">
-      <el-button plain>朴素按钮</el-button>
-      <el-button type="primary" plain>主要按钮</el-button>
-      <el-button type="success" plain>成功按钮</el-button>
-      <el-button type="info" plain>信息按钮</el-button>
-      <el-button type="warning" plain>警告按钮</el-button>
-      <el-button type="danger" plain>危险按钮</el-button>
-    </el-row>
-    <el-row class="d2-mb">
-      <el-button round>圆角按钮</el-button>
-      <el-button type="primary" round>主要按钮</el-button>
-      <el-button type="success" round>成功按钮</el-button>
-      <el-button type="info" round>信息按钮</el-button>
-      <el-button type="warning" round>警告按钮</el-button>
-      <el-button type="danger" round>危险按钮</el-button>
-    </el-row>
-    <el-row>
-      <el-button icon="el-icon-search" circle></el-button>
-      <el-button type="primary" icon="el-icon-edit" circle></el-button>
-      <el-button type="success" icon="el-icon-check" circle></el-button>
-      <el-button type="info" icon="el-icon-message" circle></el-button>
-      <el-button type="warning" icon="el-icon-star-off" circle></el-button>
-      <el-button type="danger" icon="el-icon-delete" circle></el-button>
-    </el-row>
+    <el-dialog title="新增角色" :visible.sync="addDialogVisible">
+       <el-form label-width="80px" size="mini">
+        <el-form-item label="角色名称"  >
+          <el-input  auto-complete="off" v-model="role.roleName"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述"  >
+          <el-input  auto-complete="off" v-model="role.remark"></el-input>
+        </el-form-item>
+       <el-form-item >
+          <el-button type="primary" v-on:click="addRole">立即提交</el-button>
+          <el-button @click="addDialogVisible=false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
 
-    <h1>禁用状态</h1>
-    <el-row class="d2-mb">
-      <el-button disabled>默认按钮</el-button>
-      <el-button type="primary" disabled>主要按钮</el-button>
-      <el-button type="success" disabled>成功按钮</el-button>
-      <el-button type="info" disabled>信息按钮</el-button>
-      <el-button type="warning" disabled>警告按钮</el-button>
-      <el-button type="danger" disabled>危险按钮</el-button>
-    </el-row>
-    <el-row>
-      <el-button plain disabled>朴素按钮</el-button>
-      <el-button type="primary" plain disabled>主要按钮</el-button>
-      <el-button type="success" plain disabled>成功按钮</el-button>
-      <el-button type="info" plain disabled>信息按钮</el-button>
-      <el-button type="warning" plain disabled>警告按钮</el-button>
-      <el-button type="danger" plain disabled>危险按钮</el-button>
-    </el-row>
-
-    <h1>文字按钮</h1>
-    <el-row>
-      <el-button type="text">文字按钮</el-button>
-      <el-button type="text" disabled>文字按钮</el-button>
-    </el-row>
-
-    <h1>图标按钮</h1>
-    <el-row>
-      <el-button type="primary" icon="el-icon-edit"></el-button>
-      <el-button type="primary" icon="el-icon-share"></el-button>
-      <el-button type="primary" icon="el-icon-delete"></el-button>
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
-      <el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
-    </el-row>
-
-    <h1>按钮组</h1>
-    <el-row>
-      <el-button-group>
-        <el-button type="primary" icon="el-icon-arrow-left">上一页</el-button>
-        <el-button type="primary">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
-      </el-button-group>
-      <el-button-group>
-        <el-button type="primary" icon="el-icon-edit"></el-button>
-        <el-button type="primary" icon="el-icon-share"></el-button>
-        <el-button type="primary" icon="el-icon-delete"></el-button>
-      </el-button-group>
-    </el-row>
-
-    <h1>加载中</h1>
-    <el-row>
-      <el-button type="primary" :loading="true">加载中</el-button>
-    </el-row>
-
-    <h1>不同尺寸</h1>
-    <el-row>
-      <el-row class="d2-mb">
-        <el-button>默认按钮</el-button>
-        <el-button size="medium">中等按钮</el-button>
-        <el-button size="small">小型按钮</el-button>
-        <el-button size="mini">超小按钮</el-button>
-      </el-row>
-      <el-row>
-        <el-button round>默认按钮</el-button>
-        <el-button size="medium" round>中等按钮</el-button>
-        <el-button size="small" round>小型按钮</el-button>
-        <el-button size="mini" round>超小按钮</el-button>
-      </el-row>
-    </el-row>
+    <el-table
+      :data="roles"
+      style="width: 100%">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
+      <el-table-column
+        prop="roleId"
+        label="角色ID"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="roleName"
+        label="角色名称"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="remark"
+        label="角色描述">
+      </el-table-column>
+      <el-table-column label="操作" fixed="right" align="center">
+        <template slot-scope="scope">
+          <el-button  type="text" size="small">查看</el-button>
+          <el-button type="text" size="small">编辑</el-button>
+          <el-button type="text" size="small"  @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </d2-container>
 </template>
 
 <script>
+import util from "@/libs/util.js";
+import qs from "qs";
 export default {
-  name: 'role'
-}
+  name: "role",
+  data() {
+    return {
+      roles: [],
+      addDialogVisible: false,
+      searchText: "",
+      role: { roleName: "", remark: "", roleId: 0 }
+    };
+  },
+  methods: {
+    getRoles: function(event) {
+      var that = this;
+      var sid = util.cookies.get("sessionId");
+      console.log("sessionid==" + sid, "  searchText=" + this.searchText);
+      this.$axios({
+        method: "post",
+        url: "/roles",
+        headers: { token: sid },
+        data: qs.stringify({ searchText: that.searchText })
+      })
+        .then(res => {
+          console.log(res.data);
+          that.roles = res.data;
+        })
+        .catch(err => {
+          console.log("err: ", err,err.response.data.message);
+          if(err.response.data.message.includes("Subject does not have permission")){
+             this.$message({
+                message: '警告哦，没有操作权限',
+                type: 'warning'
+             });
+          }
+
+        });
+    },
+    addRole: function(event) {
+      var that = this;
+      var sid = util.cookies.get("sessionId");
+       console.log("sessionid==" + sid, that.role);
+      this.$axios({
+        method: "post",
+        url: "/roleAdd",
+        headers: { token: sid },
+        data: qs.stringify(that.role)
+      })
+        .then(res => {
+          console.log(res);
+          if (res.status == 200) {
+            that.getRoles();
+            that.addDialogVisible = false;
+          }
+        })
+        .catch(err => {
+          console.log("err: ", err);
+        });
+    },
+    handleDelete: function(index, row) {
+      var that = this;
+      var sid = util.cookies.get("sessionId");
+      console.log(index, row, row.roleId, sid);
+
+      this.$confirm("此操作将永久删除该记录, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          that
+            .$axios({
+              method: "post",
+              url: "/roleDelete",
+              headers: { token: sid },
+              data: qs.stringify({ roleId: row.roleId})
+            })
+            .then(res => {
+              console.log(res);
+              if (res.status == 200) {
+                that.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                that.getRoles();
+              }
+            })
+            .catch(err => {
+              console.group("结果..");
+              console.log("err: ", err);
+            });
+        })
+        .catch(() => {
+          that.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    }
+  }
+};
 </script>

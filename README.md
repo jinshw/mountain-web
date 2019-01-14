@@ -1,24 +1,17 @@
-# D2Admin 项目起始模板
+[![Build Status](https://www.travis-ci.org/d2-projects/d2-admin-start-kit.svg?branch=master)](https://www.travis-ci.org/d2-projects/d2-admin-start-kit)
 
-只保留了基础功能，例如
+[D2Admin](https://github.com/d2-projects/d2-admin) 简化版起始模板，删除所有完整版中的示例代码，保留所有核心功能。
 
-* 主题系统
-* 登陆和注销
-* 数据持久化
-* 多标签页
-* 菜单和路由逻辑
-* ...
+[码云镜像](https://gitee.com/fairyever/d2-admin-start-kit)
 
-[中文文档](http://d2admin.fairyever.com/zh/)
 
-**完整版**
+---
 
-[Github 仓库](https://github.com/d2-projects/d2-admin) | 
-[码云仓库](https://gitee.com/fairyever/d2-admin) | 
-[在线预览地址](https://fairyever.gitee.io/d2-admin-preview)
-
-**简化版模板 (本项目)**
-
-[Github 仓库](https://github.com/d2-projects/d2-admin-start-kit) | 
-[码云仓库](https://gitee.com/fairyever/d2-admin-start-kit) | 
-[在线预览地址](https://fairyever.gitee.io/d2-admin-start-kit-preview/#/index)
+# 跨域
+* 把原有的mock去掉，在main.js中，注释掉 import '@/mock'
+* 在main.js中添加全局的axios对象引用：
+    import axios from 'axios'
+    Vue.prototype.$axios = axios
+* 在原来调用接口的地方改成 vm.$axios 调用
+* axios在post的方式调用时传递参数需要用qs插件转换一下，不然报错
+* 保持sessionId：把后台传递过来的sessionId保存在cookie中

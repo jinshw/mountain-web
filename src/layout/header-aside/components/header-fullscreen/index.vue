@@ -1,26 +1,26 @@
 <template>
   <el-tooltip
     effect="dark"
-    :content="isFullScreen ? '退出全屏' : '全屏'"
+    :content="active ? '退出全屏' : '全屏'"
     placement="bottom">
-    <el-button class="d2-mr btn-text can-hover" type="text" @click="d2adminFullScreenToggle">
-      <d2-icon v-if="isFullScreen" name="compress"/>
+    <el-button class="d2-mr btn-text can-hover" type="text" @click="toggle">
+      <d2-icon v-if="active" name="compress"/>
       <d2-icon v-else name="arrows-alt" style="font-size: 16px"/>
     </el-button>
   </el-tooltip>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   computed: {
-    ...mapState({
-      isFullScreen: state => state.d2admin.isFullScreen
-    })
+    ...mapState('d2admin/fullscreen', [
+      'active'
+    ])
   },
   methods: {
-    ...mapMutations([
-      'd2adminFullScreenToggle'
+    ...mapActions('d2admin/fullscreen', [
+      'toggle'
     ])
   }
 }
