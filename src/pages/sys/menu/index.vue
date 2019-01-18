@@ -200,6 +200,9 @@ export default {
   computed: {
    
   },
+  mounted(){
+    this.getMenus();
+  },
   methods: {
     getMenus: function(event) {
       var that = this;

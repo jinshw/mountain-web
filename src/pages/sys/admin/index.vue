@@ -93,6 +93,9 @@ export default {
       user: { userId:0,username: "", password: "", email: "",mobile:"",status:"",deptId:"" }
     };
   },
+  mounted(){
+    this.getUsers();
+  },
   methods: {
     getUsers: function(event) {
       var that = this;

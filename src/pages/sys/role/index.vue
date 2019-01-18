@@ -73,6 +73,9 @@ export default {
       role: { roleName: "", remark: "", roleId: 0 }
     };
   },
+  mounted(){
+    this.getRoles();
+  },
   methods: {
     getRoles: function(event) {
       var that = this;

@@ -124,6 +124,9 @@ export default {
 
     }
   },
+  mounted(){
+    this.getDepts();
+  },
   methods:{
     getDepts: function(event) {
       var that = this;
