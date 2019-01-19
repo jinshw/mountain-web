@@ -106,7 +106,10 @@ export default {
         method: "post",
         url: "/users",
         headers: { token: sid },
-        data: qs.stringify({searchText:that.searchText})
+        data: qs.stringify({searchText:that.searchText}),
+        // headers: {
+        //     'X-Requested-With': 'XMLHttpRequest'
+        // }
       })
         .then(res => {
           console.log(res);
