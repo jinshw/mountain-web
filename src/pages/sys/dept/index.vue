@@ -7,7 +7,7 @@
       </el-col>
       <el-col :span="18">
         <el-button v-on:click="getDepts">查询</el-button>
-        <el-button type="primary" v-on:click="addDialogVisible=true">新增</el-button>
+        <el-button type="primary" v-on:click="clickAdd()">新增</el-button>
         <el-button type="primary" >修改</el-button>
         <el-button type="primary" >删除</el-button>
       </el-col>  
@@ -93,7 +93,7 @@ export default {
     return {
       searchText:"",
       addDialogVisible:false,
-      dept:{deptId:0,parentId:-1,parentName:"",name:"",orderNum:0,delFlag:0},
+      dept:{deptId:0,parentId:-1,parentName:"一级部门",name:"",orderNum:0,delFlag:0},
       depts:[],
       attrs:[
         {
@@ -128,6 +128,10 @@ export default {
     this.getDepts();
   },
   methods:{
+    clickAdd(){
+      this.addDialogVisible=true
+      this.dept={deptId:0,parentId:-1,parentName:"一级部门",name:"",orderNum:0,delFlag:0}
+    },
     getDepts: function(event) {
       var that = this;
       var sid = util.cookies.get("sessionId");
@@ -136,12 +140,24 @@ export default {
         method: "post",
         url: "/sysdept/getTree",
         headers: { token: sid },
-        data: qs.stringify({ searchText: that.searchText,deptId:"0"})
+        data: qs.stringify({ searchText: that.searchText,deptId:"-1"})
       })
         .then(res => {
           console.log(res.data);
-          that.depts = res.data.children;
-          that.depts = that.formatData()
+          if(res.data.code == 444){
+            that.$message({
+              message: '登录过期，即将跳转登录页面',
+              type: 'warning',
+              duration:5000,
+              onClose:function(){
+                window.location.href = "http://localhost:8081/mt#/login"
+              }
+            });
+          }else{
+              that.depts = res.data.children;
+              that.depts = that.formatData()
+          }
+        
         })
         .catch(err => {
           console.log("err: ", err,err.response.data.message);
@@ -196,7 +212,7 @@ export default {
       })
         .then(res => {
           console.log(res.data);
-          that.data2 = res.data.children;
+          that.data2=[res.data];
           that.treeDialog = true
         })
         .catch(err => {

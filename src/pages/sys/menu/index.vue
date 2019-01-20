@@ -7,7 +7,7 @@
       </el-col>
       <el-col :span="18">
         <el-button v-on:click="getMenus">查询</el-button>
-        <el-button type="primary" v-on:click="addDialogVisible=true">新增</el-button>
+        <el-button type="primary" v-on:click="clickAddBT()">新增</el-button>
         <el-button type="primary" >修改</el-button>
         <el-button type="primary" >删除</el-button>
       </el-col>  
@@ -74,10 +74,11 @@
       <el-container style="height: 400px;width:100%; border: 1px solid #eee;overflow-y: scroll;">
         <el-tree style="width:100%;"
           :data="data2"
-          node-key="id"
+          node-key="menuId"
           ref="tree"
           highlight-current
           :props="defaultProps"
+          :default-expanded-keys="[-1]"
           >
         </el-tree>
       </el-container>
@@ -151,7 +152,7 @@ export default {
       menus: [],
       addDialogVisible: false,
       searchText: "",
-      menu: { menuId: 0, name: "", type: "0", url: "",perms:"",parentId:"",parentName:"",icon:"",orderNum:0 },
+      menu: { menuId: 0, name: "", type: "0", url: "",perms:"",parentId:"-1",parentName:"一级菜单",icon:"",orderNum:0 },
 
       data2: [],
       defaultProps: {
@@ -204,6 +205,11 @@ export default {
     this.getMenus();
   },
   methods: {
+    clickAddBT(){
+      this.addDialogVisible=true
+      this.menu={ menuId: 0, name: "", type: "0", url: "",perms:"",parentId:"-1",parentName:"一级菜单",icon:"",orderNum:0 }
+
+    },
     getMenus: function(event) {
       var that = this;
       var sid = util.cookies.get("sessionId");
@@ -212,12 +218,24 @@ export default {
         method: "post",
         url: "/sysmenu/getTree",
         headers: { token: sid },
-        data: qs.stringify({ searchText: that.searchText,menuId:"0" })
+        data: qs.stringify({ searchText: that.searchText,menuId:"-1" })
       })
         .then(res => {
           console.log(res.data);
-          that.menus = res.data.children;
-          that.menus = that.formatData()
+          if(res.data.code == 444){
+            that.$message({
+              message: '登录过期，即将跳转登录页面',
+              type: 'warning',
+              duration:5000,
+              onClose:function(){
+                window.location.href = "http://localhost:8081/mt#/login"
+              }
+            });
+          }else{
+            that.menus = res.data.children;
+            that.menus = that.formatData()
+          }
+          
         })
         .catch(err => {
           console.log("err: ", err,err.response.data.message);
@@ -314,7 +332,7 @@ export default {
       })
         .then(res => {
           console.log(res.data);
-          that.data2 = res.data.children;
+          that.data2 = [res.data];
           that.menuTreeDialog = true
         })
         .catch(err => {

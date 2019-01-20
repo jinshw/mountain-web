@@ -113,7 +113,19 @@ export default {
       })
         .then(res => {
           console.log(res);
-          that.users = res.data;
+          if(res.data.code == 444){
+            that.$message({
+              message: '登录过期，即将跳转登录页面',
+              type: 'warning',
+              duration:5000,
+              onClose:function(){
+                window.location.href = "http://localhost:8081/mt#/login"
+              }
+            });
+          }else{
+            that.users = res.data;
+          }
+         
         })
         .catch(err => {
           console.group("登陆结果..");

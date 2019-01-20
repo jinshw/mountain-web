@@ -63,6 +63,7 @@
 <script>
 import util from "@/libs/util.js";
 import qs from "qs";
+import $ from "jquery"
 export default {
   name: "role",
   data() {
@@ -81,14 +82,53 @@ export default {
       var that = this;
       var sid = util.cookies.get("sessionId");
       console.log("sessionid==" + sid, "  searchText=" + this.searchText);
+      console.log($(window))
+
+      // $.ajax({
+      //   url:"http://127.0.0.1:8080/mt/sysrole/list",
+      //   type:"post",
+      //   dataType:"json",
+      //   // beforeSend:function(xhr){
+      //   //   xhr.setRequestHeader("token",sid)
+      //   // },
+      //   success:function(data){
+      //     console.log("mmmmmmmm")
+      //     console.log(data)
+      //       if(data.code == 444){
+      //         that.$message({
+      //           message: '登录过期，即将跳转登录页面',
+      //           type: 'warning',
+      //           duration:5000,
+      //           onClose:function(){
+      //             window.location.href = "http://localhost:8081/mt#/login"
+      //           }
+      //         });
+      //       }else{
+      //         that.roles = res.data;
+      //       }
+      //   }
+      // })
+
       this.$axios({
         method: "post",
-        url: "/roles",
+        url: "http://127.0.0.1:8080/mt/sysrole/list",
         headers: { token: sid },
         data: qs.stringify({ searchText: that.searchText })
       })
         .then(res => {
+          console.log("kkkk")
           console.log(res.data);
+          if(res.data.code == 444){
+            this.$message({
+              message: '登录过期，即将跳转登录页面',
+              type: 'warning',
+              duration:5000,
+              onClose:function(){
+                window.location.href = "http://localhost:8081/mt#/login"
+              }
+            });
+          }
+
           that.roles = res.data;
         })
         .catch(err => {
@@ -99,8 +139,10 @@ export default {
                 type: 'warning'
              });
           }
-
         });
+
+
+
     },
     addRole: function(event) {
       var that = this;
