@@ -112,6 +112,7 @@ export default {
         // }
       })
         .then(res => {
+          console.log("ttttttttttt.....");
           console.log(res);
           if(res.data.code == 444){
             that.$message({
@@ -121,6 +122,12 @@ export default {
               onClose:function(){
                 window.location.href = "http://localhost:8081/mt#/login"
               }
+            });
+          }else if(res.data.code == 600){
+            that.$message({
+              message: res.data.msg,
+              type: 'warning',
+              duration:5000
             });
           }else{
             that.users = res.data;
